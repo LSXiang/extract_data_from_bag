@@ -18,7 +18,8 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
-
+find_package(pcl_conversions REQUIRED)
+find_package(PCL REQUIRED)
 
 find_package(Boost REQUIRED
     COMPONENTS system filesystem thread date_time program_options)
@@ -41,12 +42,36 @@ ament_target_dependencies(extract_realsense_data_from_bag
     geometry_msgs
     nav_msgs
     cv_bridge
-    image_transport)
-target_link_libraries(extract_realsense_data_from_bag ${OpenCV_LIBS} ${Boost_LIBRARIES})
+    image_transport
+    pcl_conversions)
+target_link_libraries(extract_realsense_data_from_bag
+    ${OpenCV_LIBS}
+    ${Boost_LIBRARIES}
+    ${PCL_LIBRARIES})
+
+add_executable(extract_feynman_data_from_bag
+    src/extract_feynman_data_from_bag.cc)
+ament_target_dependencies(extract_feynman_data_from_bag
+    rclcpp
+    rcpputils
+    rosbag2_cpp
+    std_msgs
+    sensor_msgs
+    geometry_msgs
+    nav_msgs
+    cv_bridge
+    image_transport
+    pcl_conversions)
+target_link_libraries(extract_feynman_data_from_bag
+    ${OpenCV_LIBS}
+    ${Boost_LIBRARIES}
+    ${PCL_LIBRARIES})
 
 # Install nodes
 install(
-    TARGETS extract_realsense_data_from_bag
+    TARGETS
+        extract_realsense_data_from_bag
+        extract_feynman_data_from_bag
     DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
