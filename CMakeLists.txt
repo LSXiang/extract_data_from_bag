@@ -67,11 +67,30 @@ target_link_libraries(extract_feynman_data_from_bag
     ${Boost_LIBRARIES}
     ${PCL_LIBRARIES})
 
+add_executable(data_record_to_bag
+    src/data_record_to_bag.cc)
+ament_target_dependencies(data_record_to_bag
+    rclcpp
+    rcpputils
+    rosbag2_cpp
+    std_msgs
+    sensor_msgs
+    geometry_msgs
+    nav_msgs
+    cv_bridge
+    image_transport
+    pcl_conversions)
+target_link_libraries(data_record_to_bag
+    ${OpenCV_LIBS}
+    ${Boost_LIBRARIES}
+    ${PCL_LIBRARIES})
+
 # Install nodes
 install(
     TARGETS
         extract_realsense_data_from_bag
         extract_feynman_data_from_bag
+        data_record_to_bag
     DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
